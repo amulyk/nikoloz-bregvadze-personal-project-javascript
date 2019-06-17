@@ -4,15 +4,13 @@ export class Transaction {
         this.store = {count: 1}
     }
 
-    validStep(step) {
-        let isObject = (typeof step == "object")
-        let isMetaValid = step.meta && step.meta.title && step.meta.description
-        return !!isObject && !!step.index && !!step.call && isMetaValid
-    }
-
-    createScenario(...steps) {
+    // validation against multiple requirements for a list of steps 
+    validSteps(...steps){
+        // validate individual steps
         for (let step of steps) {
-            if (!this.validStep(step)) {
+            let isObject = (typeof step == "object")
+            let isMetaValid = step.meta && step.meta.title && step.meta.description
+            if (!(!!isObject && !!step.index && !!step.call && isMetaValid)){
                 throw new Error("Invalid Step!!!")
             }
         }
@@ -21,13 +19,24 @@ export class Transaction {
         if ((new Set(indexes)).size != indexes.length){
             throw new Error("Duplicate step indexes aren't allowed!")
         }
+        // check if last step has a redundant restore()
+            if (steps[steps.length-1].restore){
+            throw new Error("Last step shouldn't have a restore function!")
+        }
+        return steps
+    }
+
+    createScenario(...steps) {
+        let scenario = this.validSteps(...steps)  
         // Step order according to their index
-        return steps.sort((a, b) => a.index - b.index)
+        return scenario.sort((a, b) => a.index - b.index)
     }
 
     async dispatch(scenario) {
         scenario = this.createScenario(...scenario)
-        for (let step of scenario) {
+        for (let i = 0; i < scenario.length; i++) {
+            let step = scenario[i]
+
             try {
                 let storeBefore = { ...this.store }
                 await step.call(this.store)
@@ -44,9 +53,7 @@ export class Transaction {
         for (let i = scenario.length - 1; i >= 0; --i){
             let step = scenario[i]
             if(step.restore){
-                if (i == scenario.length - 1){
-                    throw new Error("Last step shouldn't have a restore function!")
-                }
+
                 await step.restore()
             }
         }

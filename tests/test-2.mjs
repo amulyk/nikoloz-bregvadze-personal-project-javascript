@@ -4,42 +4,46 @@ const scenario = [
     {
         index: 1,
         meta: {
-            title: 'Read popular customers',
-            description: 'This action is responsible for reading the most popular customers'
+            title: 'Increment count',
+            description: 'This action is expected to be valid'
         },
-        // callback for main execution
         call: async (store) => {
             store.count += 1
         },
-        // callback for rollback
         restore: async () => { }
     },
     {
         index: 2,
         meta: {
-            title: 'Read popular customers',
-            description: 'This action is responsible for reading the most popular customers'
+            title: 'Increment count',
+            description: 'This action is expected to be valid'
         },
-        // callback for main execution
         call: async (store) => {
             store.count += 1
-            throw new Error()
         },
-        // callback for rollback
+        restore: async () => { }
+    },
+    {
+        index: 3,
+        meta: {
+            title: 'Increment count',
+            description: 'This action is expected to be invalid, since it\'s the last step and has restore()'
+        },
+        call: async (store) => {
+            store.count += 1
+        },
         restore: async () => { }
     }
 ];
 
 const transaction = new Transaction();
-
-
 (async () => {
     try {
         await transaction.dispatch(scenario);
         const store = transaction.store; // {} | null
         const logs = transaction.logs; // []
-        console.log(logs)
-        console.log(store)
+        console.log('LOGS:', logs)
+        console.log('STORE:', store)
     } catch (err) {
         // Send email about broken transaction
         console.log(err)
