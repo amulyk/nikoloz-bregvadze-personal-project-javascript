@@ -1,12 +1,7 @@
-// const Scenario = require('./scenario')
-
-
-
 export class Transaction {
     constructor() {
         this.logs = []
-        this.store = {}
-        this.restoreFunctions = []
+        this.store = {count: 1}
     }
 
     validStep(step) {
@@ -39,11 +34,24 @@ export class Transaction {
                 let storeAfter = { ...this.store }
                 this.updateLogs(step, null, storeBefore, storeAfter)
             } catch (error) {
-                console.log(error)
+                await this.rollback(scenario)
                 this.updateLogs(step, error)
             }
         }
-    }
+    }   
+
+    async rollback(scenario){
+        for (let i = scenario.length - 1; i >= 0; --i){
+            let step = scenario[i]
+            if(step.restore){
+                if (i == scenario.length - 1){
+                    throw new Error("Last step shouldn't have a restore function!")
+                }
+                await step.restore()
+            }
+        }
+        this.store = null
+    }   
 
     updateLogs(step, error, storeBefore, storeAfter) {
         let errored = !(storeBefore && storeAfter)

@@ -23,6 +23,7 @@ const scenario = [
         // callback for main execution
         call: async (store) => {
             store.count += 1
+            throw new Error()
         },
         // callback for rollback
         restore: async () => { }
@@ -38,6 +39,7 @@ const transaction = new Transaction();
         const store = transaction.store; // {} | null
         const logs = transaction.logs; // []
         console.log(logs)
+        console.log(store)
     } catch (err) {
         // Send email about broken transaction
         console.log(err)
