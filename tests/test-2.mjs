@@ -1,3 +1,6 @@
+// This is a test case when we throw an error
+// if we see a restore() on the last step
+
 import { Transaction } from '../transaction'
 
 const scenario = [
