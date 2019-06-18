@@ -30,7 +30,6 @@ const scenario = [
         },
         restore: async (store) => {
             store.count -=3
-            console.log('store after last restore():', store)
          }
     }
 ];

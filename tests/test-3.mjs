@@ -1,5 +1,6 @@
-// This is a test case when we skip restore() during rollback
-// if restore() in any of the steps is not present
+// This is the case when we skip restore() during rollback
+// if restore method 
+// in any of the steps is not present
 
 import { Transaction } from '../transaction'
 
