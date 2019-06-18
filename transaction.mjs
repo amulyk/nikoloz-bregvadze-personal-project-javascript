@@ -54,16 +54,18 @@ export class Transaction {
             let step = scenario[i]
             if(step.restore){
 
-                await step.restore()
+                await step.restore(this.store)
             }
         }
         this.store = null
     }   
 
-    updateLogs(step, error, storeBefore, storeAfter) {
+    updateLogs(STEP, error, storeBefore, storeAfter) {
         let errored = !(storeBefore && storeAfter)
+        let step = {...STEP}
         delete step.call
         delete step.restore
+        
         if (!errored) {
             this.logs.push({ ...step, storeBefore, storeAfter, error })
         } else {
