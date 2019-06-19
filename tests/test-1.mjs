@@ -1,5 +1,5 @@
 // This is a valid example test case
-
+console.log(`// This is a valid example test case`)
 import { Transaction } from '../transaction'
 
 const scenario = [

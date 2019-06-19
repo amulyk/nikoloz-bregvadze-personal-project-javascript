@@ -1,8 +1,7 @@
-// This is the case when we're missing 
+console.log(`// This is the case when we're missing 
 // a required field in any of the scenario steps
 //  (either an index or meta)
-// It is expected to be invalid
-
+// It is expected to be invalid`)
 import { Transaction } from '../transaction'
 
 const scenario = [

@@ -1,6 +1,5 @@
-// This is the case when we 
-// come across duplicate indexes 
-
+console.log(`// This is the case when we 
+// come across duplicate indexes `)
 import { Transaction } from '../transaction'
 
 const scenario = [

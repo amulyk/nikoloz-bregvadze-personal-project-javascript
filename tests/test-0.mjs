@@ -1,6 +1,6 @@
-// This is a case when we have an invalid 
+console.log(`// This is a case when we have an invalid 
 // type for a property
-
+`)
 
 import { Transaction } from '../transaction'
 
