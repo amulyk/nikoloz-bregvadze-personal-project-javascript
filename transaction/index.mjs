@@ -43,6 +43,9 @@ export class Transaction {
             if (!isValid || !(!!isObject && !!step.index && !!step.call && isMetaValid)){
                 throw new Error("Invalid Step!!!")
             }
+            if (step.silent){
+                delete step.restore
+            }
         }
         // check for duplicate indexes
         let indexes = steps.map(step=>step.index)
