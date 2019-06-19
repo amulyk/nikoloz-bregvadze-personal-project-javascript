@@ -2,7 +2,11 @@ import { Validator } from '../validator'
 export class Transaction {
     constructor() {
         this.logs = []
+        // We need store to be initialized
+        // with a count property (a number)
+        // for our tests to work
         this.store = {count: 1}
+        // (It's arbitrary, doesn't break anything but tests)
         this.schema = {
             index: {
                 type: 'number'
@@ -62,7 +66,6 @@ export class Transaction {
         scenario = this.createScenario(...scenario)
         for (let i = 0; i < scenario.length; i++) {
             let step = scenario[i]
-
             try {
                 let storeBefore = { ...this.store }
                 await step.call(this.store)
